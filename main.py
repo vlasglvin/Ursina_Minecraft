@@ -32,8 +32,19 @@ class Axe(Entity):
     def __init__(self):
             super().__init__(
             parent = camera.ui,
-            model="assets/minecraft_iron_pickaxe",
-            texture=textures,)
+            model="assets/minecraft_iron_pickaxe/scene",
+            scale = 0.005,
+            position = Vec2(-0.5, 0.5),
+            rotation = Vec3(150, -10, 0))
+
+class Tree(Entity):
+    def __init__(self, position, scale = 5):
+            super().__init__(
+            parent = scene,
+            model="assets/minecraft_tree/scene",
+            scale = scale,
+            position = (position),
+            origin_y = 0.6)
 
 class Block(Button):
     id = 0
@@ -77,6 +88,10 @@ for z in range(-MAP_SIZE, MAP_SIZE):
         height = noise([x*0.02, z* 0.02])
         height = math.floor(height * 7.5)
         new_block = Block((x, height, z))
+        rand_num = random.randint(1, 100)
+        if rand_num == 15:
+            tree = Tree(position=(x, height+1, z), scale=random.randint(3,5))
+
 
 window.fullscreen = True
 scene.fog_density = 0.025
@@ -87,4 +102,5 @@ DirectionalLight(parent=pivot, y=2, z=3, shadows=True)
 
 player = FirstPersonController()
 sky = Sky(texture = "sky_sunset")
+#axe = Axe()
 app.run()
