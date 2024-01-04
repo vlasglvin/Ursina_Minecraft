@@ -1,0 +1,11 @@
+Model Information:
+* title:	Minecraft Chest
+* source:	https://sketchfab.com/3d-models/minecraft-chest-137c1d2f391a4b7c9234e035473d0ae3
+* author:	Minecraft (https://sketchfab.com/minefur)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Minecraft Chest" (https://sketchfab.com/3d-models/minecraft-chest-137c1d2f391a4b7c9234e035473d0ae3) by Minecraft (https://sketchfab.com/minefur) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

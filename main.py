@@ -27,9 +27,16 @@ def get_image_list(foldername):
 
 textures = get_image_list("blocks")
 
+
+class Axe(Entity):
+    def __init__(self):
+            super().__init__(
+            parent = camera.ui,
+            model="assets/minecraft_iron_pickaxe",
+            texture=textures,)
+
 class Block(Button):
     id = 0
-
     def __init__(self, position, block_id=0):
         super().__init__(
         parent = scene,
