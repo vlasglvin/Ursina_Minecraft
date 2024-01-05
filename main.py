@@ -13,6 +13,7 @@ PATH = os.getcwd()
 ASSETS_PATH = os.path.join(PATH, "assets")#game adress
 
 
+
 def get_image_list(foldername):
     path_dir = os.path.join(ASSETS_PATH, foldername)#assets folder adress
     image_names = os.listdir(path_dir)#player down adress
@@ -30,12 +31,27 @@ textures = get_image_list("blocks")
 
 class Axe(Entity):
     def __init__(self):
-            super().__init__(
+        super().__init__(
             parent = camera.ui,
-            model="assets/minecraft_iron_pickaxe/scene",
-            scale = 0.005,
-            position = Vec2(-0.5, 0.5),
-            rotation = Vec3(150, -10, 0))
+            model="assets\minecraft-diamond-pickaxe\source\Diamond Pickaxe\Diamond Pickaxe\model\obj\Diamond-Pickaxe.obj",
+            texture = "assets\minecraft-diamond-pickaxe\source\Diamond Pickaxe\Diamond Pickaxe\material\Diffuse.png",
+            scale = 0.03,
+            position = Vec2(0.5, -0.4),
+            rotation = Vec3(100, 448, -70),
+            shader=basic_lighting_shader
+            )
+
+        self.sound = Audio("assets\gravel.ogg")
+
+    def active(self):
+        self.sound.play()
+        self.rotation = Vec3(67, 468, -70)
+        self.position = Vec2(0.5, -0.3)
+    
+    def pasive(self):
+        self.rotation = Vec3(100, 448, -70)
+        self.position = Vec2(0.5, -0.4)
+
 
 class Tree(Entity):
     def __init__(self, position, scale = 5):
@@ -78,9 +94,13 @@ class Block(Button):
         
         if self.hovered:
             if key == "left mouse down":
+                axe.active()
                 destroy(self)
-            if key == "right mouse down":
+            elif key == "right mouse down":
+                axe.active()
                 new_block = Block(position=self.position + mouse.normal, block_id=Block.id)
+            else:
+                axe.pasive()
 
 noise = PerlinNoise(octaves=3, seed = random.randint(1,1000))
 for z in range(-MAP_SIZE, MAP_SIZE):
@@ -102,5 +122,5 @@ DirectionalLight(parent=pivot, y=2, z=3, shadows=True)
 
 player = FirstPersonController()
 sky = Sky(texture = "sky_sunset")
-#axe = Axe()
+axe = Axe()
 app.run()
