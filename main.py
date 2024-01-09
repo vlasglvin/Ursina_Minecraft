@@ -1,8 +1,9 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 import os
+from direct.actor.Actor import Actor
 from ursina.prefabs.sky import Sky
-from ursina.shaders import basic_lighting_shader
+from ursina.shaders import basic_lighting_shader,lit_with_shadows_shader
 import random
 from perlin_noise import PerlinNoise
 app = Ursina()
@@ -29,6 +30,16 @@ def get_image_list(foldername):
 textures = get_image_list("blocks")
 
 
+class Player(FirstPersonController):
+    def update(self):
+        super().update()
+        if held_keys["shift"]:
+            self.speed = 10
+        else:
+            self.speed = 5
+
+
+
 class Axe(Entity):
     def __init__(self):
         super().__init__(
@@ -41,10 +52,10 @@ class Axe(Entity):
             shader=basic_lighting_shader
             )
 
-        self.sound = Audio("assets\gravel.ogg")
+        self.build_sound = Audio("assets\gravel.ogg")
+        self.destroy_sound = Audio("assets\mud02.ogg")
 
     def active(self):
-        self.sound.play()
         self.rotation = Vec3(67, 468, -70)
         self.position = Vec2(0.5, -0.3)
     
@@ -60,7 +71,10 @@ class Tree(Entity):
             model="assets/minecraft_tree/scene",
             scale = scale,
             position = (position),
-            origin_y = 0.6)
+            origin_y = 0.6,
+            shader=lit_with_shadows_shader
+            )
+            
 
 class Block(Button):
     id = 0
@@ -74,7 +88,7 @@ class Block(Button):
         scale = 0.5,
         origin_y = 0.5,
         highlight_color=color.gray,
-        #shader=basic_lighting_shader
+        shader=lit_with_shadows_shader
         )
     
     def input(self, key):
@@ -95,9 +109,11 @@ class Block(Button):
         if self.hovered:
             if key == "left mouse down":
                 axe.active()
+                axe.destroy_sound.play()
                 destroy(self)
             elif key == "right mouse down":
                 axe.active()
+                axe.build_sound.play()
                 new_block = Block(position=self.position + mouse.normal, block_id=Block.id)
             else:
                 axe.pasive()
@@ -118,9 +134,15 @@ scene.fog_density = 0.025
 scene.fog_color = color.rgb(120, 146, 232)
 
 pivot = Entity()
-DirectionalLight(parent=pivot, y=2, z=3, shadows=True)
+DirectionalLight(parent=pivot, y=2, z=3, shadows=True, rotation=(45, -45, 45))
 
-player = FirstPersonController()
+player = Player()
 sky = Sky(texture = "sky_sunset")
+# entity = Entity()
+# chest = Actor("assets/minecraft_chest/scene.gltf")
+# chest.reparent_to(entity)
+# chest.loop("Chest_0_A|Chest_0_AAction")
+# entity.position = player.position
+# entity.rotation = Vec3(90, 90, 90)
 axe = Axe()
 app.run()
