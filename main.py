@@ -45,5 +45,5 @@ class Controller():
 # entity.position = player.position
 # entity.rotation = Vec3(90, 90, 90)
 game = Controller()
-game.new_game()
+#game.new_game()
 app.run()

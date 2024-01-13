@@ -42,6 +42,7 @@ class Axe(Entity):
 
         self.build_sound = Audio("assets\gravel.ogg")
         self.destroy_sound = Audio("assets\mud02.ogg")
+        self.enabled = False
 
     def active(self):
         self.rotation = Vec3(67, 468, -70)

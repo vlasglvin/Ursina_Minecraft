@@ -1,4 +1,18 @@
 from ursina import *
+from ursina import Default, camera
+
+class MenuButton(Button):
+    def __init__(self, text, action, x, y, parent, **kwargs):
+        super().__init__(text,  on_click = action,parent=parent,
+                         color=color.rgb(107, 107, 107),
+                         texture="assets/button.png",
+                         scale = (1, 0.1),
+                         text_size = 2,
+                         text_color=color.white,
+                         pressed_scale = 1.05,
+                         y = y, x = x, origin=(0,0),
+                         **kwargs)
+
 
 class Menu(Entity):
     def __init__(self, game, **kwargs):
@@ -6,3 +20,13 @@ class Menu(Entity):
         
         self.background = Sprite(parent = self, scale = 0.3, texture = "assets/menu_minecraft_bg.png", color = color.gray, z = 1)
         Text.default_font = "assets/PressStart2P-Regular.ttf"
+
+        Text("BlockBuilder", scale=3, parent=self, origin = (0,0), x = 0, y = 0.4)
+
+        self.btns = [
+            MenuButton("New Game", game.new_game, x=0,y=0.125   , parent=self),
+            MenuButton("Continue", game.new_game, x=0,y=0.01, parent=self),
+            MenuButton("Save Game", game.new_game, x=0,y=-0.105, parent=self),
+            MenuButton("Exit", application.quit, x=0,y=-0.22, parent=self),
+        ]
+        
