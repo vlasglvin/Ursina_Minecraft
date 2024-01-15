@@ -9,8 +9,8 @@ class MenuButton(Button):
                          scale = (1, 0.1),
                          text_size = 2,
                          text_color=color.white,
-                         pressed_scale = 1.05,
                          y = y, x = x, origin=(0,0),
+                         ignore_paused = True,
                          **kwargs)
 
 
