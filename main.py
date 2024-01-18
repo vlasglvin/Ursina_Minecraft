@@ -24,7 +24,8 @@ class Controller(Entity):
         scene.fog_color = color.rgb(120, 146, 232)
         self.player = Player()
         self.sky = Sky(texture = "sky_sunset")
-        self.blocks = []
+        pivot = Entity()
+        DirectionalLight(parent=pivot, y=2, z=3, shadows=True, rotation=(45, -45, 45))
         self.menu = Menu(self)
         self.toggle_menu()
         mouse.locked = False
@@ -39,19 +40,18 @@ class Controller(Entity):
         axe.enabled = not axe.enabled
 
     def new_game(self):
+        self.clear_map()
+
         noise = PerlinNoise(octaves=3, seed = random.randint(1,1000))
         for z in range(-MAP_SIZE, MAP_SIZE):
             for x in range(-MAP_SIZE, MAP_SIZE):
                 height = noise([x*0.02, z* 0.02])
                 height = math.floor(height * 7.5)
                 new_block = Block((x, height, z))
-                self.blocks.append(new_block)
                 rand_num = random.randint(1, 100)
                 if rand_num == 15:
                     tree = Tree(position=(x, height+1, z), scale=random.randint(3,5))
         
-        pivot = Entity()
-        DirectionalLight(parent=pivot, y=2, z=3, shadows=True, rotation=(45, -45, 45))
         self.player.position = (0, 50, 0)
         self.player.start_pos = self.player.position
 
@@ -60,13 +60,55 @@ class Controller(Entity):
     
 
     def input(self, key):
-        if key == "escape" and len(self.blocks)>0:
+        if key == "escape" and len(Block.map)>0:
             self.toggle_menu()
 
     def save_game(self):
 
         with open("save.dat", "wb") as file:
             pickle.dump(self.player.position, file)
+            pickle.dump(len(Block.map),file)
+            for  block in Block.map:
+                pickle.dump(block.position, file)
+                pickle.dump(block.id, file)
+            pickle.dump(len(Tree.map), file)
+            for  tree in Tree.map:
+                pickle.dump(tree.position, file)
+                pickle.dump(tree.scale, file)  
+
+        self.toggle_menu()     
+
+    def clear_map(self):
+        for block in Block.map:
+            destroy(block)
+        for tree in Tree.map:
+            destroy(tree)
+        Block.map.clear()
+        Tree.map.clear()
+
+    def load_game(self):
+        self.clear_map()
+
+
+        with open("save.dat", "rb") as file:
+            self.player.position = pickle.load(file)
+            self.player.start_pos = self.player.position
+            len_map = pickle.load(file)
+            for i in range(len_map):
+                pos = pickle.load(file)
+                block_id = pickle.load(file)
+                Block(pos, block_id)
+            len_tree = pickle.load(file)
+            for i in range(len_tree):
+                pos = pickle.load(file)
+                scale = pickle.load(file)
+                Tree(pos, scale)
+
+            self.toggle_menu()
+
+        
+
+
 
 
 # entity = Entity()

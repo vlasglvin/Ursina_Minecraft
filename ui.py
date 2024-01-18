@@ -25,8 +25,8 @@ class Menu(Entity):
 
         self.btns = [
             MenuButton("New Game", game.new_game, x=0,y=0.125   , parent=self),
-            MenuButton("Continue", game.new_game, x=0,y=0.01, parent=self),
-            MenuButton("Save Game", game.new_game, x=0,y=-0.105, parent=self),
+            MenuButton("Continue", game.load_game, x=0,y=0.01, parent=self),
+            MenuButton("Save Game", game.save_game, x=0,y=-0.105, parent=self),
             MenuButton("Exit", application.quit, x=0,y=-0.22, parent=self),
         ]
         

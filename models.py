@@ -57,19 +57,22 @@ class Axe(Entity):
 
 
 class Tree(Entity):
+    map = []
     def __init__(self, position, scale = 5):
-            super().__init__(
-            parent = scene,
-            model="assets/minecraft_tree/scene",
-            scale = scale,
-            position = (position),
-            origin_y = 0.6,
-            shader=lit_with_shadows_shader
+        super().__init__(
+        parent = scene,
+        model="assets/minecraft_tree/scene",
+        scale = scale,
+        position = (position),
+        origin_y = 0.6,
+        shader=lit_with_shadows_shader
             )
             
+        Tree.map.append(self)   
 
 class Block(Button):
     id = 0
+    map = []
     def __init__(self, position, block_id=0):
         super().__init__(
         parent = scene,
@@ -82,7 +85,10 @@ class Block(Button):
         highlight_color=color.gray,
         shader=lit_with_shadows_shader
         )
-    
+        self.id = block_id  
+        Block.map.append(self)
+
+
     def input(self, key):
         for i in range(10):
             if  key== str(i):
@@ -102,6 +108,7 @@ class Block(Button):
             if key == "left mouse down":
                 axe.active()
                 axe.destroy_sound.play()
+                Block.map.remove(self)
                 destroy(self)
             elif key == "right mouse down":
                 axe.active()
