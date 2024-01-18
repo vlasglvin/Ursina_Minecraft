@@ -6,6 +6,7 @@ from ursina.prefabs.sky import Sky
 from ursina.shaders import basic_lighting_shader,lit_with_shadows_shader
 import random
 from perlin_noise import PerlinNoise
+import pickle
 
 from config import *
 
@@ -61,6 +62,12 @@ class Controller(Entity):
     def input(self, key):
         if key == "escape" and len(self.blocks)>0:
             self.toggle_menu()
+
+    def save_game(self):
+
+        with open("save.dat", "wb") as file:
+            pickle.dump(self.player.position, file)
+
 
 # entity = Entity()
 # chest = Actor("assets/minecraft_chest/scene.gltf")
