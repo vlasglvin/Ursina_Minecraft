@@ -13,7 +13,7 @@ from config import *
 app = Ursina()
 
 from models import *
-from ui import Menu
+from ui import Menu, Inventar
 
 
 class Controller(Entity):
@@ -27,6 +27,7 @@ class Controller(Entity):
         pivot = Entity()
         DirectionalLight(parent=pivot, y=2, z=3, shadows=True, rotation=(45, -45, 45))
         self.menu = Menu(self)
+        self.inventar = Inventar(Block.textures)
         self.toggle_menu()
         mouse.locked = False
         mouse.visible = True
@@ -62,6 +63,9 @@ class Controller(Entity):
     def input(self, key):
         if key == "escape" and len(Block.map)>0:
             self.toggle_menu()
+
+        if key == "e" and len(Block.map)>0:
+            self.inventar.toggle()
 
     def save_game(self):
 

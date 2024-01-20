@@ -29,4 +29,55 @@ class Menu(Entity):
             MenuButton("Save Game", game.save_game, x=0,y=-0.105, parent=self),
             MenuButton("Exit", application.quit, x=0,y=-0.22, parent=self),
         ]
+
+class Item(Button):
+     def __init__(self, texture, action, x, y, parent, **kwargs):
+        super().__init__(text="",  on_click = action,parent=parent,
+                         color=color.white,
+                         texture=texture,
+                         scale = (0.1, 0.1),
+                         y = y, x = x, origin=(0,0),
+                         ignore_paused = True,
+                         **kwargs)
+
+
         
+class Inventar(Entity):
+    def __init__(self, textures, width=6, height=4, **kwargs):
+        super().__init__(
+            parent = camera.ui,
+            model = Quad(radius=.015),
+            texture = 'assets/button.png',
+            texture_scale = (width, height),
+            scale = (width*.1, height*.1),
+            origin = (-.5,.5),
+            position = (-.3,.4),
+            color = color.rgba(200, 200, 200),
+            ignore_paused = True
+            )
+
+        self.width = width
+        self.height = height
+        self.textures= textures
+        self.items = []
+        k = 0
+        x = -1
+        y = 1
+        for row in range(self.height):
+            for col in range(self.width):
+                self.items.append(Item(self.textures[k], self.toggle, x,y, self ))
+                k+=1
+                x += 0.1
+            y += 0.1
+            
+
+        self.enabled = False
+        self.visible = False
+
+    def toggle(self):
+        application.paused = not application.paused
+        self.enabled = not self.enabled
+        self.visible = not self.visible
+        mouse.locked = not mouse.locked
+        mouse.visible = not mouse.visible
+    

@@ -73,6 +73,8 @@ class Tree(Entity):
 class Block(Button):
     id = 0
     map = []
+    textures = textures
+
     def __init__(self, position, block_id=0):
         super().__init__(
         parent = scene,
