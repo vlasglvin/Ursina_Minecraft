@@ -21,12 +21,28 @@ textures = get_image_list("blocks")
 
 
 class Player(FirstPersonController):
+    def input(self, key):
+        if key == "g":
+            if self.gravity == 0:
+                 self.gravity = 1
+                 self.jumping = True
+            else:
+                self.gravity = 0
+                 
+
     def update(self):
         super().update()
         if held_keys["shift"]:
             self.speed = 10
         else:
             self.speed = 5
+
+        if held_keys["z"]:
+            self.y -= 1
+
+        if held_keys["q"]:
+            self.y += 1
+        
         
         if self.y < -30:
             self.position = self.start_pos

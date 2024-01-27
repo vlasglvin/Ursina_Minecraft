@@ -1,5 +1,6 @@
 from ursina import *
 from ursina import Default, camera
+from models import Block
 
 class MenuButton(Button):
     def __init__(self, text, action, x, y, parent, **kwargs):
@@ -31,16 +32,22 @@ class Menu(Entity):
         ]
 
 class Item(Button):
-     def __init__(self, texture, action, x, y, parent, **kwargs):
-        super().__init__(text="",  on_click = action,parent=parent,
+     def __init__(self, texture, x, y, parent, block_id, **kwargs):
+        super().__init__(text="",  on_click = self.click,parent=parent,
                          color=color.white,
                          texture=texture,
-                         scale = (0.1, 0.1),
-                         y = y, x = x, origin=(0,0),
+                         scale = (0.1, 0.15),
+                         y = y, x = x, origin=(- .5,.5),
+                         z = -.1,
                          ignore_paused = True,
                          **kwargs)
+        
+        self.id = block_id
 
-
+     def click(self):
+         Block.id = self.id
+         self.parent.toggle()
+    
         
 class Inventar(Entity):
     def __init__(self, textures, width=6, height=4, **kwargs):
@@ -61,14 +68,16 @@ class Inventar(Entity):
         self.textures= textures
         self.items = []
         k = 0
-        x = -1
-        y = 1
+        x = 0.025
+        y = -0.05
         for row in range(self.height):
             for col in range(self.width):
-                self.items.append(Item(self.textures[k], self.toggle, x,y, self ))
+                self.items.append(Item(self.textures[k], x,y, self, k))
                 k+=1
-                x += 0.1
-            y += 0.1
+                x += 0.165
+            x = 0.025
+            y -= 0.25
+
             
 
         self.enabled = False
