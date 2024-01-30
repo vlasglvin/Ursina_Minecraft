@@ -23,14 +23,19 @@ class Controller(Entity):
         scene.fog_density = 0.025
         scene.fog_color = color.rgb(120, 146, 232)
         self.player = Player()
-        self.sky = Sky(texture = "sky_sunset")
+        #self.sky = Sky(texture = "sky_sunset")
+        
+        self.sky = NightSky()
+
         pivot = Entity()
         DirectionalLight(parent=pivot, y=2, z=3, shadows=True, rotation=(45, -45, 45))
         self.menu = Menu(self)
         self.inventar = Inventar(Block.textures)
+        self.game_music = Audio("assets\life_in_corrupted_binary.flac", loop = True, volume = 0.7)
         self.toggle_menu()
         mouse.locked = False
         mouse.visible = True
+          
 
     def toggle_menu(self):
         application.paused = not application.paused
@@ -39,6 +44,12 @@ class Controller(Entity):
         mouse.locked = not mouse.locked
         mouse.visible = not mouse.visible
         axe.enabled = not axe.enabled
+        if application.paused:
+            self.menu.menu_music.play()
+            self.game_music.stop()
+        else:
+            self.menu.menu_music.stop()
+            self.game_music.play()
 
     def new_game(self):
         self.clear_map()

@@ -20,8 +20,17 @@ def get_image_list(foldername):
 textures = get_image_list("blocks")
 
 
+class NightSky(Entity):
+    def __init__(self):
+        super().__init__(
+        parent = scene,
+        model="assets\stars\scene",
+        scale = 100,
+            )
+
 class Player(FirstPersonController):
     def input(self, key):
+        super().input(key)
         if key == "g":
             if self.gravity == 0:
                  self.gravity = 1
@@ -37,10 +46,10 @@ class Player(FirstPersonController):
         else:
             self.speed = 5
 
-        if held_keys["z"]:
+        if held_keys["z"] and not self.gravity:
             self.y -= 1
 
-        if held_keys["q"]:
+        if held_keys["q"]and not self.gravity:
             self.y += 1
         
         
