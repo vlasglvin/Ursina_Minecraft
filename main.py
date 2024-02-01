@@ -23,12 +23,12 @@ class Controller(Entity):
         scene.fog_density = 0.025
         scene.fog_color = color.rgb(120, 146, 232)
         self.player = Player()
-        #self.sky = Sky(texture = "sky_sunset")
+        self.sky = Sky(texture = "sky_default", color = color.rgb(19, 24, 31))
         
-        self.sky = NightSky()
+        #self.sky = NightSky()
 
         pivot = Entity()
-        DirectionalLight(parent=pivot, y=2, z=3, shadows=True, rotation=(45, -45, 45))
+        DirectionalLight(parent=pivot, y=2, z=3, color = color.rgb(0.5, 0.5, 0.5, 1), shadows=True, rotation=(45, -45, 45))
         self.menu = Menu(self)
         self.inventar = Inventar(Block.textures)
         self.game_music = Audio("assets\life_in_corrupted_binary.flac", loop = True, volume = 0.7)
@@ -72,10 +72,10 @@ class Controller(Entity):
     
 
     def input(self, key):
-        if key == "escape" and len(Block.map)>0:
+        if key == "escape" and len(Block.map)>0 and not self.inventar.enabled:
             self.toggle_menu()
 
-        if key == "e" and len(Block.map)>0:
+        if key == "e" and not self.menu.enabled:
             self.inventar.toggle()
 
     def save_game(self):
