@@ -8,7 +8,7 @@ import random
 from perlin_noise import PerlinNoise
 import pickle
 
-from config import *
+from my_config import *
 
 app = Ursina()
 

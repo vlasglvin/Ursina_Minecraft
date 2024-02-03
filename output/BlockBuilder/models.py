@@ -2,7 +2,7 @@ from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 import os
 from ursina.shaders import basic_lighting_shader,lit_with_shadows_shader
-from config import *
+from my_config import *
 
 
 def get_image_list(foldername):
