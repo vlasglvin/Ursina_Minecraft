@@ -121,17 +121,6 @@ class Controller(Entity):
 
             self.toggle_menu()
 
-        
 
-
-
-
-# entity = Entity()
-# chest = Actor("assets/minecraft_chest/scene.gltf")
-# chest.reparent_to(entity)
-# chest.loop("Chest_0_A|Chest_0_AAction")
-# entity.position = player.position
-# entity.rotation = Vec3(90, 90, 90)
 game = Controller()
-#game.new_game()
 app.run()
